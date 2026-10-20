@@ -22,6 +22,7 @@ Every number below comes from a read-only aggregate query or a dated log. The qu
 | **Sarah AI** | 24/7 SMS and voice AI receptionist that transacts against the live schedule | **382 sessions booked autonomously for 196 customers** (63% completed). **2,873 AI-handled SMS turns across 631 contacts.** **182 inbound voice calls answered** | May → Oct 2026 |
 | **Governed agent ops** | Budget-capped, eval-gated, compliance-checked team of role agents for a lead-gen business | 4,486 ok / 6 suspicious / 2 failed dispatcher runs, 4 automatic suspensions. 673 model-eval runs. Independent Verifier: 72 outcome checks, 86.9% of results passing | 2026, as of 2026-10-20 |
 | **Multi-LLM trading committee** | Engineering showcase: 3-model council, veto-only arbiter, deterministic risk engine | **Paper-traded only. No alpha claimed.** Paper NAV −0.95% over ~4 weeks, max drawdown −7%, 35% win rate on 205 trades vs a 46.8% break-even | ~4 weeks, early 2026 |
+| **Arc Security (`arc-security-mcp` + 19 skills)** | Published AI agent security scanner & runtime EDR MCP server (`npx arc-security-mcp`) + 19 OpenClaw governance skills | **450+ skills audited** (**1,316+ findings** across **25 OWASP-mapped attack classes**, **5 coordinated disclosures**). **10,000+ skill downloads** on ClawHub | Feb 2026 → Present |
 
 What these numbers do **not** say: Sarah's figures are bookings and conversations, not revenue. No payment figure is attributed to Sarah. The trading system never touched live capital.
 
@@ -107,6 +108,7 @@ Each principle has a one-page decision record in [`adr/`](adr/).
 | 06 | [Programmatic SEO and the prune](case-studies/06-programmatic-seo-and-the-prune.md) | 13K pages, a scaled-content demotion, and a data-driven prune to 536 |
 | 07 | [Killing a strategy with evidence](case-studies/07-killing-a-strategy-with-evidence.md) | Preregistration, 1:1 reconciliation, and a clean retirement at −8.8% |
 | 08 | [AI tutor invariants](case-studies/08-ai-tutor-invariants.md) | AI talks, deterministic code grades |
+| 09 | [Arc Security: MCP scanner, runtime EDR & 19 skills](case-studies/09-arc-security-mcp-and-skills.md) | 450+ skills audited, 25 OWASP-mapped attack classes, 5 vendor disclosures, 10K+ downloads |
 
 For the go-to-market view, see [GTM for AI agents](talks/gtm-for-ai-agents.md): how I would sell and deploy agents into SMB and enterprise accounts.
 
@@ -121,6 +123,7 @@ For the go-to-market view, see [GTM for AI agents](talks/gtm-for-ai-agents.md): 
 | [governed-agent-ops](https://github.com/Trypto1019/governed-agent-ops) | Dispatcher, budget-capped keys, PII filter on tool results, eval-gated model choice, compliance-as-data, verifier, approvals |
 | [studio-os-reference](https://github.com/Trypto1019/studio-os-reference) | Durable two-phase payments, reconciliation, webhook security, rate limiting, release engineering |
 | [multi-llm-trading-committee](https://github.com/Trypto1019/multi-llm-trading-committee) | 3-model council, veto-only arbiter, deterministic risk engine, debate ranker. Paper and mock data only |
+| [arc-security-suite](https://github.com/Trypto1019/arc-security-suite) | Published `arc-security-mcp` server (14 static/semantic + runtime EDR tools, 155-skill malicious DB, OWASP Agentic AI Top 10) + 19 OpenClaw security & governance skills (7,701 lines) |
 
 All code repos are clean, fresh-history extracts with synthetic data. The production systems stay private.
 
