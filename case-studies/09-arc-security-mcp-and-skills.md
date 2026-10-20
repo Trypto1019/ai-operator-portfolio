@@ -1,51 +1,51 @@
-# Case Study 09 — Arc Security: AI Agent Security Scanner, Runtime EDR & 19 Governance Skills
+# Case Study 09 — The Arc Ecosystem: 19 Open-Source Agent Skills & an npm MCP Server (10,000+ Downloads)
 
 - **Repository**: [`arc-security-suite`](https://github.com/Trypto1019/arc-security-suite) (also published on npm as [`arc-security-mcp`](https://www.npmjs.com/package/arc-security-mcp) and registered on the Official MCP Registry as `com.arcself/arc-security`)
 - **Upstream Organization Repo**: [`Arc-Self/arc-security-mcp`](https://github.com/Arc-Self/arc-security-mcp)
 
 ---
 
-## Context & Problem
+## Context: The $200 Autonomous AI Company Experiment
 
-As autonomous AI agents began installing third-party skills and MCP servers with shell, filesystem, database, and payment permissions, the ecosystem lacked pre-install static/semantic verification and runtime behavioral monitoring (EDR for AI agents). Traditional static scanners looked for known CVEs in dependencies rather than prompt-injected `SKILL.md` instructions, capability-purpose mismatches, identity file tampering (`SOUL.md` / `AGENTS.md`), or multi-step data exfiltration chains.
+In February 2026, I ran an experiment to test how far an autonomous AI agent (**Arc**) could go in building, shipping, and supporting real developer tools when organized like a company with departments, budgets, and human board oversight.
 
----
-
-## What Was Built
-
-### 1. Ecosystem Security Research & Coordinated Disclosures
-- Audited **450+ agent skills across 39+ audit rounds** (expanding to 87 rounds across the broader ecosystem), identifying **1,316+ security findings** across **25 distinct attack classes** mapped 10/10 to the **OWASP Agentic AI Top 10 (`ASI01`–`ASI10`)**.
-- Completed **5 coordinated responsible disclosures** across the AI ecosystem (Anthropic HackerOne, Microsoft MSRC, FalkorDB GHSA, deepset, and `claude-mem`).
-- Cataloged **155 malicious and high-risk skills** into a curated zero-latency lookup database (`KNOWN_MALICIOUS`) covering attack classes such as `soul_engineering`, `credential_theft`, `agent_mediated_vishing`, `crypto_drain`, `ssh_rce`, `voice_impersonation`, and `anti_safety_training`.
-
-### 2. Arc Security MCP Server (`arc-security-mcp` v0.5.1 — 3,871-Line Engine)
-Built and published an installable MCP server (`npx arc-security-mcp`) and Claude Code plugin exposing **14 tools** across two layers:
-- **Static & Semantic Pre-Install Analysis (9 Tools)**: `check_skill_safety`, `scan_skill_realtime`, `analyze_skill_code` (31 regex pattern rules across shell injection, credential harvesting, obfuscation, and persistence), `analyze_skill_intent` (semantic `SKILL.md` capability-purpose mismatch detector), `get_attack_class_info`, `get_owasp_mapping`, `list_dangerous_patterns`, `get_threat_landscape`, and `security_checklist`.
-- **Runtime EDR for AI Agents (5 Tools)**: `monitor_start`, `monitor_event`, `monitor_end`, `set_monitor_policy`, and `get_session_alerts` — an HMAC-authenticated session monitor evaluating live agent tool calls against 7 behavioral rules (sensitive credential file reads, exfiltration endpoints, dangerous shell invocations, rapid enumeration, capability escalation, rate limits, and file-read-to-network staging chains).
-
-### 3. 19 OpenClaw Security, Compliance & Multi-Agent Operations Skills (7,701 Lines)
-Published 19 modular Python skills to ClawHub (accumulating **10,000+ community downloads** and indexed in `VoltAgent/awesome-openclaw-skills`), including:
-- `arc-skill-sandbox` (532 lines; 2,034+ downloads): Isolated execution harness injecting canary credentials (`sk-fake-sandbox-...`) to detect runtime exfiltration.
-- `arc-workflow-orchestrator` (465 lines; 3,281+ downloads): Declarative multi-skill pipeline engine with conditional branching and step-level audit logs.
-- `arc-compliance-audit` (411 lines; 2,067+ downloads) & `arc-compliance-checker` (919 lines): Hash-chained immutable JSONL audit trails and CIS/OWASP compliance verification.
-- `arc-department-manager` (329 lines; 1,973+ downloads), `arc-trust-verifier` (418 lines), `arc-skill-gitops` (469 lines), `arc-skill-scanner` (713 lines), and `arc-wake-state` (409 lines).
+Rather than building a single narrow tool, the goal was to build a complete suite of practical tools that other builders running autonomous agents actually needed: workflow orchestration, sub-agent department management, budget enforcement, crash-resilient state persistence, compliance audit logging, and pre-install/runtime skill verification.
 
 ---
 
-## Architecture
+## What Was Built & Shipped
+
+### 1. 19 Published OpenClaw Skills (`7,701 Lines` of Python — `10,000+` Community Downloads)
+Published 19 modular, zero-dependency Python skills to the public ClawHub registry (indexed in `VoltAgent/awesome-openclaw-skills`), spanning six operational categories:
+- **Workflow & Multi-Agent Orchestration**:
+  - `arc-workflow-orchestrator` (465 lines; **3,281+ downloads**): Declarative YAML/JSON pipeline runner chaining multiple agent skills with conditional branching, retries, and step-level audit logs.
+  - `arc-department-manager` (329 lines; **1,973+ downloads**): Organizes sub-agents into specialized departments with task queues, status tracking, and roll-up reporting.
+  - `arc-agent-lifecycle` (348 lines): End-to-end lifecycle and version manager for deployed agents.
+- **Cost Control & Model Routing**:
+  - `arc-free-worker-dispatch` (324 lines): Routes grunt-work tasks across zero-cost and low-cost models with automatic fallback chains.
+  - `budget` (314 lines): Ledger and hard spend-cap enforcement to prevent runaway API bills.
+- **State Persistence & Observability**:
+  - `arc-wake-state` (409 lines), `arc-warm-wake` (307 lines), and `arc-memory-pruner` (318 lines): Crash-resilient state serialization, startup hydration, and automated context-window memory compaction.
+  - `arc-metrics-dashboard` (402 lines) & `arc-skill-health-monitor` (350 lines): Operational telemetry and drift monitoring.
+- **Compliance, DevSecOps & Sandboxing**:
+  - `arc-compliance-audit` (411 lines; **2,067+ downloads**) & `arc-compliance-checker` (919 lines): Immutable hash-chained JSONL audit trails and policy verification.
+  - `arc-skill-sandbox` (532 lines; **2,034+ downloads**): Isolated execution harness that injects canary credentials (`sk-fake-sandbox-...`) to verify how third-party skills behave before production install.
+  - `arc-skill-gitops` (469 lines), `arc-trust-verifier` (418 lines), `arc-skill-differ` (352 lines), `arc-skill-scanner` (713 lines), and `arc-security-audit` (267 lines; **1,000+ downloads**).
+
+### 2. Published npm MCP Server (`arc-security-mcp` v0.5.1 — `3,871-Line` Engine)
+Packaged the ecosystem's verification and runtime monitoring tools into a standard Model Context Protocol (MCP) server (`npx arc-security-mcp`) and Claude Code plugin with **14 tools**, backed by a curated database of **450+ audited skills** (**1,316+ findings** across 25 documented patterns mapped to the OWASP Agentic AI Top 10, plus 5 coordinated open-source disclosures).
 
 ```mermaid
 flowchart LR
-    Skill[Third-Party Skill / MCP Tool] --> DB{Curated DB\n155 Known Bad}
-    DB -->|Match| Block[Block & Return Verdict]
-    DB -->|Unknown| Static[31 Static Code Rules\n+ Semantic Intent Scan]
-    Static --> Policy[Per-Skill Runtime Policy]
-    Policy --> EDR[HMAC Session Monitor\n7 Behavioral EDR Rules]
-    EDR --> Audit[(Hash-Chained Audit Log)]
+    Board[Human Board Oversight\nTravis] --> Arc[Arc Autonomous Orchestrator]
+    Arc --> Orch[Workflow & Department Skills\nOrchestrator + Dept Manager]
+    Arc --> Ops[Cost & State Skills\nBudget + Worker Dispatch + Wake State]
+    Arc --> Gov[Compliance & Sandbox Skills\nAudit Trail + Canary Sandbox + GitOps]
+    Arc --> MCP[Published npm MCP Server\nnpx arc-security-mcp]
 ```
 
 ---
 
-## Why It Matters for Enterprise AI & Security Sales
+## Why This Matters for a Revenue & Sales Organization
 
-Enterprise buyers (CISOs, VPs of Engineering, and Operations Leaders) hesitate to deploy autonomous agents because of supply-chain risk, prompt injection, and unmonitored tool execution. Having built and published an OWASP-mapped agent security scanner, runtime EDR server, and 19 governance skills — backed by 5 real-world vendor disclosures — allows me to address enterprise security, governance, and compliance objections from firsthand engineering experience.
+When a company hires me as a Sales Director, Sales Manager, or Enterprise Account Executive, they get 20+ years of proven sales leadership ($10M+/yr at Sentry Servicing, $600K+/mo at Liberty Credit Management) **plus** an operator who has built everything from full-stack CRMs and voice/SMS agents to multi-agent orchestrators and published developer tools with 10,000+ downloads. That breadth lets me spot automation opportunities across the revenue engine, build internal tooling for my reps, and speak with complete fluency to both business executives and technical evaluators.
