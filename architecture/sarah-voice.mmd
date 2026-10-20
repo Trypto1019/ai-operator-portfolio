@@ -1,0 +1,15 @@
+%% Sarah AI: inbound voice path.
+flowchart LR
+    C[Caller] --> T[Telephony provider]
+    T -->|SIP bridge| RT[[Realtime speech model]]
+    RT -->|verified webhook: call.incoming| App[App server]
+    App -->|session config: AI disclosure first| RT
+    RT -->|tool calls| Reg[Shared tool registry - same as SMS]
+    Reg --> DB[(Schedule DB)]
+    Reg --> PI[Pending intents]
+    RT -->|caller asks for a human| WT[Warm transfer: hold loop, attempt window, scripted outcomes]
+    WT --> Staff[Staff workstation]
+    WT -->|no answer| CB[Truthful fallback + callback task]
+    WD[Audio-level watchdog] -->|monitors bridged audio| WT
+    WD -->|dead air detected| Off[Auto-disable warm transfer + report]
+    RT --> Rec[(Recap + consented recording with retention policy)]

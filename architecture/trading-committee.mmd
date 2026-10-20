@@ -1,0 +1,18 @@
+%% Multi-LLM trading committee (PAPER account only).
+flowchart LR
+    DATA[Market data, news, macro] --> PRE[Emergency trim: runs before any model]
+    PRE --> C1[Model A]
+    PRE --> C2[Model B]
+    PRE --> C3[Model C]
+    C1 --> MAJ{2-of-3 majority on direction}
+    C2 --> MAJ
+    C3 --> MAJ
+    MAJ -->|no majority| HOLD[No trade]
+    MAJ --> ARB[Arbiter: veto-only from a whitelist, cannot flip direction]
+    ARB -->|veto| HOLD
+    ARB --> RM[Risk Marshal: pure Python, no LLM, no appeals]
+    RM -->|position, sector, correlation, drawdown, volatility limits| V{RiskVerdict}
+    V -->|violation| HOLD
+    V -->|ok| BR[Broker - PAPER account]
+    BR --> AU[(Per-decision audit snapshot)]
+    HOLD --> AU

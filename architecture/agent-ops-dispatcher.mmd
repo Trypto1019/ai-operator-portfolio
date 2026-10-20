@@ -1,0 +1,21 @@
+%% Governed agent ops: dispatcher to verifier to approvals.
+flowchart TD
+    Cron[Single cron line every 5 min] --> D[Dispatcher]
+    D --> J[(jobs)]
+    D -->|limits: 1 per role, 3 total| L[Agent loop]
+    L --> TA[Per-role tool allow-list]
+    TA --> Tool[Tool]
+    Tool --> PII[PII scan on tool result]
+    PII --> L
+    L -.->|per-role spend-capped key| GW[LLM gateway]
+    GW -.->|HTTP 402| BE[budget_exhausted event]
+    L --> CC[Compliance check: YAML rules, deterministic first, LLM for judgment only]
+    L --> AP[Approval queue: never proceeds on silence]
+    L -->|structured JSON final turn| E[(events)]
+    E --> VF[Verifier: outcome checks, no LLM, no shared code]
+    VF --> VR[(verifier results)]
+    VR --> D
+    D -->|zero events written| SU[Mark run suspicious]
+    D -->|2 consecutive failures| AD[Auto-disable job + alert]
+    EV[Model eval harness] -->|passing scorecard under 90 days old| CH[Role charter model choice]
+    CH --> L

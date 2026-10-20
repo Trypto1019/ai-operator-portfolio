@@ -1,0 +1,22 @@
+%% Sarah AI: one inbound SMS turn, from webhook to audit.
+%% Deterministic steps are rectangles; the only LLM step is the agent loop.
+flowchart TD
+    W[SMS webhook] --> V{HMAC signature valid? timing-safe}
+    V -- no --> R[Reject + log]
+    V -- yes --> D[Deterministic routers]
+    D -->|STOP / QUIT / natural-language revocation| S[Upsert suppression, single ack after commit]
+    D -->|YES to a pending intent| X[Execute confirmed intent in a transaction]
+    D -->|suppressed / DNC| N[No reply]
+    D -->|other| Q[Ack fast, per-conversation turn queue]
+    Q --> I[Identity resolution: no match / single / multiple]
+    I --> P[Compose prompt: base persona + flag-gated policy sections]
+    P --> L[[LLM tool loop: temp 0.2, no parallel tools, tool-call breaker]]
+    L --> T[Tool registry: zod schema, autonomy gate, guard, execute]
+    T -->|read| DB[(Schedule DB)]
+    T -->|write| PI[Pending intent: Reply YES to confirm]
+    L --> G[Post-model guards: grounded confirmation, value gate, URL allow-list]
+    G -->|guard fired| RD[Redraft, original draft stored encrypted]
+    RD --> L
+    G --> O[Send reply]
+    O --> A[(Turn audit: tool calls, results, guard decisions, model, prompt version)]
+    X --> DB

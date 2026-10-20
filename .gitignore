@@ -1,0 +1,28 @@
+# Secrets and keys
+.env*
+!.env.example
+*.pem
+*.key
+
+# Data and dumps (this is a docs repo: no data, ever)
+*.sqlite
+*.db
+*.dump
+*.sql.gz
+*.csv
+*.jsonl
+logs/
+data/raw/
+
+# Tooling
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+.next/
+
+# Agent and editor files
+.claude/
+CLAUDE.md
+AGENTS.md
+.DS_Store

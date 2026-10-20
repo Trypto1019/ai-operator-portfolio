@@ -1,0 +1,29 @@
+%% SaunaticaOS: durable two-phase charge plus reconciliation.
+sequenceDiagram
+    autonumber
+    participant UI as Staff POS / billing job
+    participant API as Payment service
+    participant DB as Postgres
+    participant GW as Card gateway
+    participant RC as Reconciler (every 5 min)
+
+    UI->>API: charge(customer, amount, idempotencyKey)
+    API->>DB: Tx A - insert Payment PENDING (unique idempotencyKey, requestHash)
+    alt key reused with a different request
+        DB-->>API: conflict
+        API-->>UI: 409 key misuse
+    end
+    API->>GW: sale(vault token, amount)
+    GW-->>API: approved / declined
+    API->>DB: Tx B - SELECT ... FOR UPDATE, mark SUCCEEDED, run fulfilment, audit row
+    API-->>UI: result
+
+    Note over API,GW: Crash between Tx A and Tx B leaves a PENDING row, never a lost charge
+    RC->>DB: find stuck PENDING rows
+    RC->>GW: query by transaction id
+    alt gateway says approved
+        RC->>DB: mark SUCCEEDED + fulfil
+    else unknown after N attempts
+        RC->>DB: mark UNKNOWN + open staff task
+    end
+    RC->>DB: find SUCCEEDED but unfulfilled, re-run fulfilment
